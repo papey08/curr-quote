@@ -14,5 +14,14 @@ services:
       - ./migrations/:/docker-entrypoint-initdb.d/
       - quotes-data:/var/lib/postgresql/data
 
+  curr-quote:
+    build: ./
+    command: ./curr-quote-app --docker
+    container_name: curr-quote
+    ports:
+      - "8080:8080"
+    depends_on:
+      - quotes-db-postgres
+
 volumes:
   quotes-data:
