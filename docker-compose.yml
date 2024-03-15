@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  quotes-db-postgres:
+    image: postgres:15.5
+    container_name: quotes-db-postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./migrations/:/docker-entrypoint-initdb.d/
+      - quotes-data:/var/lib/postgresql/data
+
+volumes:
+  quotes-data:
