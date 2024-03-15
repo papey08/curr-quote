@@ -7,3 +7,5 @@ const (
 	USD Currency = "USD"
 	MXN Currency = "MXN"
 )
+
+var SupportableCurrencies = [3]Currency{EUR, USD, MXN}

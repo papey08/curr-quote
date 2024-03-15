@@ -36,20 +36,33 @@ func (e *exchangeImpl) GetLatestQuote(ctx context.Context, curr model.Currency) 
 	}
 
 	var data respBody
-	if err = json.Unmarshal(body, &data); err != nil {
-		return model.Quote{}, errors.Join(model.ErrApiError, err)
+	switch curr {
+	case model.EUR:
+		var eurData respBodyEur
+		if err = json.Unmarshal(body, &eurData); err != nil {
+			return model.Quote{}, errors.Join(model.ErrApiError, err)
+		}
+		data = respBody(eurData)
+	case model.USD:
+		var usdData respBodyUsd
+		if err = json.Unmarshal(body, &usdData); err != nil {
+			return model.Quote{}, errors.Join(model.ErrApiError, err)
+		}
+		data = respBody(usdData)
+	case model.MXN:
+		var mxnData respBodyMxn
+		if err = json.Unmarshal(body, &mxnData); err != nil {
+			return model.Quote{}, errors.Join(model.ErrApiError, err)
+		}
+		data = respBody(mxnData)
 	}
 
-	var res model.Quote
+	res := model.NewQuote()
 	var ok bool
-	if res.Eur, ok = data.Values[strings.ToLower(string(model.EUR))]; !ok {
-		return model.Quote{}, errors.Join(model.ErrApiError, errors.New("missing value for eur"))
-	}
-	if res.Usd, ok = data.Values[strings.ToLower(string(model.USD))]; !ok {
-		return model.Quote{}, errors.Join(model.ErrApiError, errors.New("missing value for usd"))
-	}
-	if res.Mxn, ok = data.Values[strings.ToLower(string(model.MXN))]; !ok {
-		return model.Quote{}, errors.Join(model.ErrApiError, errors.New("missing value for mxn"))
+	for _, c := range model.SupportableCurrencies {
+		if res.Data[c], ok = data.Values[strings.ToLower(string(c))]; !ok {
+			return model.Quote{}, errors.Join(model.ErrApiError, errors.New("missing values for some currencies"))
+		}
 	}
 
 	// курсы валют в используемой мной api обновляются раз в сутки,
@@ -60,5 +73,5 @@ func (e *exchangeImpl) GetLatestQuote(ctx context.Context, curr model.Currency) 
 }
 
 type respBody struct {
-	Values map[string]float64 `json:"eur,usd,mxn"`
+	Values map[string]float64
 }

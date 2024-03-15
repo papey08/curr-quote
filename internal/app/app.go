@@ -79,14 +79,7 @@ func (a *appImpl) GetQuoteById(ctx context.Context, id string) (model.QuoteValue
 	}
 
 	var res model.QuoteValue
-	switch otherCurr {
-	case model.EUR:
-		res.Value = quote.Eur
-	case model.USD:
-		res.Value = quote.Usd
-	case model.MXN:
-		res.Value = quote.Mxn
-	}
+	res.Value = quote.Data[otherCurr]
 	res.RefreshTime = quote.RefreshTime
 	return res, nil
 }
@@ -102,14 +95,7 @@ func (a *appImpl) GetLastQuote(_ context.Context, baseCurr model.Currency, other
 
 	quote := a.quotes[baseCurr]
 	var res model.QuoteValue
-	switch otherCurr {
-	case model.EUR:
-		res.Value = quote.Eur
-	case model.USD:
-		res.Value = quote.Usd
-	case model.MXN:
-		res.Value = quote.Mxn
-	}
+	res.Value = quote.Data[otherCurr]
 	res.RefreshTime = quote.RefreshTime
 	return res, nil
 }

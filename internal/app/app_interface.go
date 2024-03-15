@@ -30,11 +30,15 @@ func New(
 		quotes: make(map[model.Currency]model.Quote),
 	}
 
+	for _, c := range model.SupportableCurrencies {
+		a.quotes[c] = model.NewQuote()
+	}
+
 	go func() {
 		for {
-			a.quotes[model.EUR], _ = a.api.GetLatestQuote(ctx, model.EUR)
-			a.quotes[model.USD], _ = a.api.GetLatestQuote(ctx, model.USD)
-			a.quotes[model.MXN], _ = a.api.GetLatestQuote(ctx, model.MXN)
+			for _, k := range model.SupportableCurrencies {
+				a.quotes[k], _ = a.api.GetLatestQuote(ctx, k)
+			}
 			logs.Info(nil, "update quotes to latest completed")
 			time.Sleep(refreshPeriod)
 		}
