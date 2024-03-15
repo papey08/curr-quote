@@ -1,6 +1,7 @@
 package httpserver
 
 import (
+	_ "curr-quote/docs"
 	"curr-quote/internal/app"
 	"github.com/gin-gonic/gin"
 )

@@ -53,6 +53,12 @@ const (
 	localConfigFile  = "config/config-local.yml"
 )
 
+//	@title			curr-quote
+//	@version		1.0
+//	@description	Swagger документация к API сервиса котировок валютных курсов
+//	@host			localhost:8080
+//	@BasePath		/api/v1
+
 func main() {
 	ctx := context.Background()
 	logs := logger.New()

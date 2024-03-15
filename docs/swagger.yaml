@@ -1,0 +1,115 @@
+basePath: /api/v1
+definitions:
+  httpserver.idData:
+    properties:
+      id:
+        type: string
+    type: object
+  httpserver.idResponse:
+    properties:
+      data:
+        $ref: '#/definitions/httpserver.idData'
+      error:
+        type: string
+    type: object
+  httpserver.quoteData:
+    properties:
+      refresh_time:
+        type: integer
+      value:
+        type: number
+    type: object
+  httpserver.quoteResponse:
+    properties:
+      data:
+        $ref: '#/definitions/httpserver.quoteData'
+      error:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Swagger документация к API сервиса котировок валютных курсов
+  title: curr-quote
+  version: "1.0"
+paths:
+  /quotes:
+    get:
+      description: Возвращает наиболее свежую котировку
+      parameters:
+      - description: Код валюты, например EUR/MXN
+        in: query
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешное получение котировки
+          schema:
+            $ref: '#/definitions/httpserver.quoteResponse'
+        "400":
+          description: Неверный формат входных данных
+          schema:
+            $ref: '#/definitions/httpserver.quoteResponse'
+        "500":
+          description: Проблемы на стороне сервера
+          schema:
+            $ref: '#/definitions/httpserver.quoteResponse'
+      summary: Получение котировки по коду валют
+    patch:
+      description: Обновляет одну котировку и сохраняет её в БД. Возвращает id, по
+        которому можно получить котировку.
+      parameters:
+      - description: Код валюты, например EUR/MXN
+        in: query
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: id котировки
+          schema:
+            $ref: '#/definitions/httpserver.idResponse'
+        "400":
+          description: Неверный формат входных данных
+          schema:
+            $ref: '#/definitions/httpserver.idResponse'
+        "500":
+          description: Проблемы на стороне сервера
+          schema:
+            $ref: '#/definitions/httpserver.idResponse'
+      summary: Обновление котировки
+  /quotes/{id}:
+    get:
+      description: Возвращает обновлённую котировку
+      parameters:
+      - description: id котировки
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешное получение котировки
+          schema:
+            $ref: '#/definitions/httpserver.quoteResponse'
+        "400":
+          description: Неверный формат входных данных
+          schema:
+            $ref: '#/definitions/httpserver.quoteResponse'
+        "404":
+          description: Котировки с указанным id не существует
+          schema:
+            $ref: '#/definitions/httpserver.quoteResponse'
+        "500":
+          description: Проблемы на стороне сервера
+          schema:
+            $ref: '#/definitions/httpserver.quoteResponse'
+      summary: Получение котировки по id
+swagger: "2.0"

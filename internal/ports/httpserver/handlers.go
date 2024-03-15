@@ -9,6 +9,14 @@ import (
 	"strings"
 )
 
+// @Summary		Обновление котировки
+// @Description	Обновляет одну котировку и сохраняет её в БД. Возвращает id, по которому можно получить котировку.
+// @Produce		json
+// @Param			code	query		string		true	"Код валюты, например EUR/MXN"
+// @Success		200		{object}	idResponse	"id котировки"
+// @Failure		500		{object}	idResponse	"Проблемы на стороне сервера"
+// @Failure		400		{object}	idResponse	"Неверный формат входных данных"
+// @Router			/quotes [patch]
 func handleRefreshQuote(a app.App) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		baseCurr, otherCurr, ok := getCurrencies(c)
@@ -34,6 +42,15 @@ func handleRefreshQuote(a app.App) gin.HandlerFunc {
 	}
 }
 
+// @Summary		Получение котировки по id
+// @Description	Возвращает обновлённую котировку
+// @Produce		json
+// @Param			id	path		string			true	"id котировки"
+// @Success		200	{object}	quoteResponse	"Успешное получение котировки"
+// @Failure		404	{object}	quoteResponse	"Котировки с указанным id не существует"
+// @Failure		500	{object}	quoteResponse	"Проблемы на стороне сервера"
+// @Failure		400	{object}	quoteResponse	"Неверный формат входных данных"
+// @Router			/quotes/{id} [get]
 func handleGetQuoteById(a app.App) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")
@@ -60,6 +77,14 @@ func handleGetQuoteById(a app.App) gin.HandlerFunc {
 	}
 }
 
+// @Summary		Получение котировки по коду валют
+// @Description	Возвращает наиболее свежую котировку
+// @Produce		json
+// @Param			code	query		string			true	"Код валюты, например EUR/MXN"
+// @Success		200		{object}	quoteResponse	"Успешное получение котировки"
+// @Failure		500		{object}	quoteResponse	"Проблемы на стороне сервера"
+// @Failure		400		{object}	quoteResponse	"Неверный формат входных данных"
+// @Router			/quotes [get]
 func handleGetLastQuote(a app.App) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		baseCurr, otherCurr, ok := getCurrencies(c)
