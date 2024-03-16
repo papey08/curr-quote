@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// errorResponse возвращает тело ответа с ошибкой
 func errorResponse(err error) idResponse {
 	if err == nil {
 		return idResponse{}
@@ -15,6 +16,7 @@ func errorResponse(err error) idResponse {
 	}
 }
 
+// makeIdResponse возвращает тело ответа с id котировки
 func makeIdResponse(id string) idResponse {
 	data := idData{Id: id}
 	return idResponse{
@@ -23,6 +25,7 @@ func makeIdResponse(id string) idResponse {
 	}
 }
 
+// makeQuoteResponse возвращает тело ответа с котировкой
 func makeQuoteResponse(value float64, refreshTime time.Time) quoteResponse {
 	data := quoteData{
 		Value:       value,

@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// New создаёт экземпляр http-сервера с middlewares и эндпоинтами
 func New(addr string, a app.App, logs logger.Logger) *http.Server {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()

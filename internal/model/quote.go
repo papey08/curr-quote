@@ -2,10 +2,8 @@ package model
 
 import "time"
 
+// Quote содержит все котировки для одной валюты и время обновления
 type Quote struct {
-	/*Eur float64
-	Usd float64
-	Mxn float64*/
 	Data map[Currency]float64
 
 	RefreshTime time.Time

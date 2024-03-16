@@ -99,6 +99,7 @@ func main() {
 		_ = srv.ListenAndServe()
 	}()
 	logs.Info(nil, "http server successfully started")
+
 	// preparing graceful shutdown
 	osSignals := make(chan os.Signal, 1)
 	signal.Notify(osSignals, os.Interrupt, syscall.SIGTERM)

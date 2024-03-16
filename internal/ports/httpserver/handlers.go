@@ -110,6 +110,7 @@ func handleGetLastQuote(a app.App) gin.HandlerFunc {
 	}
 }
 
+// getCurrencies парсит коды валют из query параметров
 func getCurrencies(c *gin.Context) (model.Currency, model.Currency, bool) {
 	code, ok := c.GetQuery("code")
 	if !ok {

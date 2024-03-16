@@ -6,7 +6,9 @@ import (
 	"net/http"
 )
 
+// Exchange представляет собой обёртку для API получения свежих котировок
 type Exchange interface {
+	// GetLatestQuote возвращает котировки для заданной валюты
 	GetLatestQuote(ctx context.Context, curr model.Currency) (model.Quote, error)
 }
 
